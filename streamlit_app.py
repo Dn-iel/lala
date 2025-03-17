@@ -17,7 +17,7 @@ def main():
   erythema = st.slider('Erythema', min_value=0, max_value=3, value=2)
   age = st.slider('Age', min_value=0, max_value=3, value=2)
 
-  user_input = ['erythema', 'age']
+  user_input = [erythema, age]
 
 model_filename = "trained_model.pkl"
 model = load_model(model_filename)
