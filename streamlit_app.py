@@ -20,7 +20,7 @@ def main():
   user_input = ['erythema', 'age']
 
 model_filename = "trained_model.pkl"
-model = load.model(model_filename)
+model = load_model(model_filename)
 prediction = predict_with_model(model, user_input)
 st.write("Model Prediction is : ", prediction)
 
