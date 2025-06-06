@@ -52,8 +52,8 @@ indices = model_data["indices"]
 full_df = load_full_dataset()
 
 # UI Streamlit
-st.title("🎬 Netflix Movie Recommender")
-st.markdown("Enter a Netflix movie title below to get detailed information and similar movie recommendations.")
+st.title("Netflix Movie Recommender")
+st.markdown("Enter a Netflix movie title below to get similar movie recommendations.")
 
 title = st.text_input("Enter a movie title:")
 search_clicked = st.button("Get Recommended Movies")
@@ -66,11 +66,11 @@ if search_clicked and title:
         if movie_details_df.empty:
             st.warning("Details not found in the full dataset.")
         else:
-            st.subheader("🎥 Selected Movie Details")
+            st.subheader("Selected Movie Details")
             st.dataframe(movie_details_df, use_container_width=True)
 
         # Rekomendasi
-        st.subheader("📺 Recommended Titles with Details:")
+        st.subheader("Recommended Titles:")
         recommendations = content_recommender(
             title,
             cosine_similarities,
