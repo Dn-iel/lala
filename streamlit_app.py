@@ -23,6 +23,18 @@ def load_full_dataset():
     df = pd.read_csv("netflix_preprocessed.csv")  # Ganti path jika perlu
     return df
 
+# Fungsi rekomendasi manual (ganti fungsi dari pickle)
+def content_recommender(title, cosine_similarities, indices, netflix_title, top_n=5):
+    if title not in indices:
+        return []
+
+    idx = indices[title]
+    sim_scores = list(enumerate(cosine_similarities[idx]))
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+    sim_scores = sim_scores[1:top_n + 1]  # Skip movie itu sendiri
+
+    recommended_indices = [i[0] for i in sim_scores]
+    return netflix_title.iloc[recommended_indices].tolist()
 
 # Kolom yang akan ditampilkan
 columns_to_show = [
@@ -34,7 +46,8 @@ columns_to_show = [
 # Load model dan data
 model_data = load_model_from_drive()
 netflix_title_series = model_data["netflix_title"]  # Series of titles
-content_recommender = model_data["content_recommender"]
+cosine_similarities = model_data["cosine_similarities"]
+indices = model_data["indices"]
 
 full_df = load_full_dataset()
 
@@ -58,7 +71,12 @@ if search_clicked and title:
 
         # Rekomendasi
         st.subheader("📺 Recommended Titles with Details:")
-        recommendations = content_recommender(title)
+        recommendations = content_recommender(
+            title,
+            cosine_similarities,
+            indices,
+            netflix_title_series
+        )
 
         for i, rec_title in enumerate(recommendations, 1):
             with st.expander(f"{i}. {rec_title}"):
